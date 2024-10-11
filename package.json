@@ -3,6 +3,9 @@
   "displayName": "Swift Development",
   "version": "0.0.1",
   "publisher": "alishobeiri",
+  "repository": {
+    "url": "https://github.com/alishobeiri/Swift-VSCode-Pack"
+  },
   "engines": {
     "vscode": "^1.94.0"
   },
@@ -94,37 +97,7 @@
         ]
       }
     ],
-    "commands": [
-      {
-        "command": "getting-started-sample.runCommand",
-        "title": "Getting Started Sample: Run Command"
-      },
-      {
-        "command": "getting-started-sample.changeSetting",
-        "title": "Getting Started Sample: Change Setting"
-      },
-      {
-        "command": "getting-started-sample.setContext",
-        "title": "Getting Started Sample: Set Context"
-      },
-      {
-        "command": "getting-started-sample.sayHello",
-        "title": "Getting Started Sample: Say Hello"
-      },
-      {
-        "command": "getting-started-sample.viewSources",
-        "title": "Getting Started Sample: View Sources"
-      }
-    ],
-    "configuration": {
-      "title": "Getting Started Sample",
-      "properties": {
-        "getting-started-sample.sampleSetting": {
-          "description": "Sample setting",
-          "type": "boolean"
-        }
-      }
-    }
+    "commands": []
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
