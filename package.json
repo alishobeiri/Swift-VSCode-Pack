@@ -1,0 +1,145 @@
+{
+  "name": "swift-development",
+  "displayName": "Swift Development",
+  "version": "0.0.1",
+  "publisher": "alishobeiri",
+  "engines": {
+    "vscode": "^1.94.0"
+  },
+  "categories": [
+    "Extension Packs"
+  ],
+  "extensionPack": [
+    "vadimcn.vscode-lldb",
+    "Gruntfuggly.triggertaskonsave",
+    "sweetpad.sweetpad",
+    "pvasek.sourcekit-lsp--dev-unofficial"
+  ],
+  "main": "./out/src/extension.js",
+  "activationEvents": [],
+  "contributes": {
+    "walkthroughs": [
+      {
+        "id": "swiftdevelopment-getting-started",
+        "title": "Swift Development for VSCode",
+        "description": "Step by step instructions for setting up Swift development in VSCode",
+        "steps": [
+          {
+            "id": "install-tools",
+            "title": "Install Necessary Tools",
+            "description": "To get your Swift development environment setup with [SweetPad](https://github.com/sweetpad-dev/sweetpad), you need install the following tools:\n-swift-format\n-xcodegen\n-swiftlint\n-xcbeautify\n-xcode-build-server\n-ios-deploy\n-tuist\nClick the button below to install all automatically\n[Run Shell Script](command:swift-development.installTools)",
+            "media": {
+              "markdown": "media/shell_script.md"
+            },
+            "completionEvents": [
+              "onCommand:swift-development.installTools"
+            ]
+          },
+          {
+            "id": "generate-build-server-config",
+            "title": "Enable Autocompletion Hints",
+            "description": "To generate autocompletions, you need to have a `buildServer.json` file that details your project configuration for SourceKit-LSP: \n[Generate Build Server Config](command:sweetpad.build.genereateBuildServerConfig)",
+            "media": {
+              "image": "https://sweetpad.hyzyla.dev/images/logo.png",
+              "altText": "SweetPad Dev Logo"
+            },
+            "completionEvents": [
+              "onCommand:sweetpad.build.genereateBuildServerConfig"
+            ]
+          },
+          {
+            "id": "add-auto-build-on-save",
+            "title": "Automatically Build on Save",
+            "description": "To automatically build the selected target when saving, we must add a `triggerTaskOnSave` task in our `settings.json`:\n[Configure `settings.json`](command:swift-development.generateSettings)",
+            "media": {
+              "markdown": "media/settings.json.md"
+            },
+            "completionEvents": [
+              "onCommand:swift-development.generateSettings"
+            ]
+          },
+          {
+            "id": "add-launch-config",
+            "title": "Add Launch Configuration",
+            "description": "Add debug configurations to the VSCode launch.json:\n[Configure `launch.json`](command:swift-development.generateLaunch)",
+            "media": {
+              "markdown": "media/launch.json.md"
+            },
+            "completionEvents": [
+              "onCommand:swift-development.generateLaunch"
+            ]
+          },
+          {
+            "id": "add-task-config",
+            "title": "Add Task Configuration",
+            "description": "Configure the VSCode task.json:\n[Configure `tasks.json`](command:swift-development.generateTasks)",
+            "media": {
+              "markdown": "media/tasks.json.md"
+            },
+            "completionEvents": [
+              "onCommand:swift-development.generateTasks"
+            ]
+          },
+          {
+            "id": "build-and-run",
+            "title": "Build and Run",
+            "description": "Test the installation by building and running your project:\n[Build and Run](command:swift-development.runSweetpadLaunch)",
+            "media": {
+              "markdown": "Open a new terminal using `Ctrl+`\\` on macOS or `Ctrl+Shift+\\` on Windows/Linux."
+            },
+            "completionEvents": [
+              "onCommand:swift-development.runSweetpadLaunch"
+            ]
+          }
+        ]
+      }
+    ],
+    "commands": [
+      {
+        "command": "getting-started-sample.runCommand",
+        "title": "Getting Started Sample: Run Command"
+      },
+      {
+        "command": "getting-started-sample.changeSetting",
+        "title": "Getting Started Sample: Change Setting"
+      },
+      {
+        "command": "getting-started-sample.setContext",
+        "title": "Getting Started Sample: Set Context"
+      },
+      {
+        "command": "getting-started-sample.sayHello",
+        "title": "Getting Started Sample: Say Hello"
+      },
+      {
+        "command": "getting-started-sample.viewSources",
+        "title": "Getting Started Sample: View Sources"
+      }
+    ],
+    "configuration": {
+      "title": "Getting Started Sample",
+      "properties": {
+        "getting-started-sample.sampleSetting": {
+          "description": "Sample setting",
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "lint": "eslint src --ext ts",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/vscode": "^1.73.0",
+    "@typescript-eslint/eslint-plugin": "^7.14.0",
+    "@typescript-eslint/parser": "^7.14.0",
+    "eslint": "^8.26.0",
+    "typescript": "^5.6.3"
+  }
+}
