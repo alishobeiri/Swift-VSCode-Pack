@@ -1,10 +1,10 @@
-# swiftdevelopment README
-
 ## Setup Instructions
 
-To get started with SweetPad, please add the following configurations to your Visual Studio Code settings.
+To get started developing Swift in VSCode, we need to configure [SweetPad](https://marketplace.visualstudio.com/items?itemName=sweetpad.sweetpad), [Trigger tasks on Save](https://marketplace.visualstudio.com/items?itemName=Gruntfuggly.triggertaskonsave), [SourceKit-LSP](https://marketplace.visualstudio.com/items?itemName=pvasek.sourcekit-lsp--dev-unofficial) and [CodeLLDB](https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb). 
 
-### Add to `settings.json`
+You can either install the extension pack and follow along with the walkthrough setup (Cmd + Shift + P) > (Help: Welcome) or follow along by using the following instructions:
+
+### 1. Add the following to `settings.json`
 
 ```json
 {
@@ -34,7 +34,7 @@ To get started with SweetPad, please add the following configurations to your Vi
 }
 ```
 
-### Add to `launch.json`
+### 2. Add the following to `launch.json`
 ```json
 {
   "version": "0.2.0",
@@ -49,8 +49,8 @@ To get started with SweetPad, please add the following configurations to your Vi
 }
 ```
 
-### Add to `tasks.json`
-```
+### 3. Add the following to `tasks.json`
+```json
 {
   "version": "2.0.0",
   "tasks": [
@@ -94,22 +94,22 @@ To get started with SweetPad, please add the following configurations to your Vi
 }
 ```
 
-### Running the Config
-Finally press `Cmd + P` and run:
+### 4. Generate Build Server Config for Autocompletion
+Press `Cmd + P` and run:
 ```
 SweetPad: Create Build Server Config
 ```
 
-### Additional Setup Instructions
+### 5. Install all necessary tools
 To ensure that you have all the necessary tools installed for working with SweetPad, please run the following commands to install the required software using Homebrew:
 
-```
+```bash
 # Install Homebrew if not already installed
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
 Then install the following tools:
-```
+```bash
 # Install swift-format
 brew install swift-format
 
@@ -131,3 +131,5 @@ brew install ios-deploy
 # Install tuist
 brew install --cask tuist
 ```
+
+If all has gone well, you should be ready to develop Swift in VSCode!
