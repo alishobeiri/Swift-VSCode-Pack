@@ -1,8 +1,9 @@
 {
   "name": "swift-development",
-  "displayName": "Swift Development",
-  "version": "0.0.1",
+  "displayName": "VSCode Swift Development Pack",
+  "version": "0.0.3",
   "publisher": "alishobeiri",
+  "icon": "media/logo.png",
   "repository": {
     "url": "https://github.com/alishobeiri/Swift-VSCode-Pack"
   },
@@ -19,7 +20,32 @@
     "pvasek.sourcekit-lsp--dev-unofficial"
   ],
   "main": "./out/src/extension.js",
-  "activationEvents": [],
+  "activationEvents": [
+    "onCommand:swift-development.welcome",
+    "onStartupFinished"
+  ],
+  "commands": [
+    {
+      "command": "swift-development.build",
+      "title": "Build",
+      "category": "Swift Development"
+    },
+    {
+      "command": "swift-development.launch",
+      "title": "Launch",
+      "category": "Swift Development"
+    }
+  ],
+  "keybindings": [
+    {
+      "command": "swift-development.runSweetpadBuild",
+      "mac": "cmd+ctrl+b"
+    },
+    {
+      "command": "swift-development.runSweetpadLaunch",
+      "mac": "cmd+ctrl+r"
+    }
+  ],
   "contributes": {
     "walkthroughs": [
       {
@@ -30,7 +56,7 @@
           {
             "id": "install-tools",
             "title": "Install Necessary Tools",
-            "description": "To get your Swift development environment setup with [SweetPad](https://github.com/sweetpad-dev/sweetpad), you need install the following tools:\n-swift-format\n-xcodegen\n-swiftlint\n-xcbeautify\n-xcode-build-server\n-ios-deploy\n-tuist\nClick the button below to install all automatically\n[Run Shell Script](command:swift-development.installTools)",
+            "description": "To get your Swift development environment setup with [SweetPad](https://github.com/sweetpad-dev/sweetpad), you need install swift-format, xcodegen, swiftlint, xcbeautify, xcode-build-server, ios-deploy and tuist\nClick the button below to install all automatically\n[Run Shell Script](command:swift-development.installTools)",
             "media": {
               "markdown": "media/shell_script.md"
             },
@@ -43,8 +69,8 @@
             "title": "Enable Autocompletion Hints",
             "description": "To generate autocompletions, you need to have a `buildServer.json` file that details your project configuration for SourceKit-LSP: \n[Generate Build Server Config](command:sweetpad.build.genereateBuildServerConfig)",
             "media": {
-              "image": "https://sweetpad.hyzyla.dev/images/logo.png",
-              "altText": "SweetPad Dev Logo"
+              "image": "media/autocomplete.png",
+              "altText": "Image of Swift autocompletion suggestions"
             },
             "completionEvents": [
               "onCommand:sweetpad.build.genereateBuildServerConfig"

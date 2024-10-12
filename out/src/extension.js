@@ -50,8 +50,13 @@ function deepMerge(target, source) {
 }
 function activate(context) {
     console.log('Congratulations, your extension "swift-development" is now active!');
+    const openWelcomeCommand = vscode.commands.registerCommand('swift-development.welcome', () => {
+        // Use the walkthrough API to open the walkthrough if you're using walkthroughs
+        vscode.commands.executeCommand('workbench.action.openWalkthrough', 'alishobeiri.swift-development#swiftdevelopment-getting-started');
+    });
+    context.subscriptions.push(openWelcomeCommand);
     // Register command for generating settings.json
-    vscode.commands.registerCommand('swift-development.generateSettings', () => __awaiter(this, void 0, void 0, function* () {
+    context.subscriptions.push(vscode.commands.registerCommand('swift-development.generateSettings', () => __awaiter(this, void 0, void 0, function* () {
         const settingsPath = path.join(vscode.workspace.rootPath || '', '.vscode', 'settings.json');
         const newSettings = {
             "triggerTaskOnSave.runonsave": {
@@ -99,7 +104,7 @@ function activate(context) {
         catch (error) {
             vscode.window.showErrorMessage(`Error updating settings.json: ${error.message}`);
         }
-    }));
+    })));
     context.subscriptions.push(vscode.commands.registerCommand('swift-development.generateLaunch', () => __awaiter(this, void 0, void 0, function* () {
         const settingsPath = path.join(vscode.workspace.rootPath || '', '.vscode', 'launch.json');
         const newLaunchConfig = {
@@ -216,6 +221,22 @@ function activate(context) {
     context.subscriptions.push(vscode.commands.registerCommand('swift-development.runSweetpadLaunch', () => __awaiter(this, void 0, void 0, function* () {
         try {
             const task = (yield vscode.tasks.fetchTasks()).find(t => t.name === 'sweetpad: launch');
+            if (task) {
+                vscode.tasks.executeTask(task);
+                vscode.window.showInformationMessage('Running sweetpad: launch task.');
+            }
+            else {
+                vscode.window.showWarningMessage('Could not find task labeled "sweetpad: launch". Please ensure tasks.json is properly configured.');
+            }
+        }
+        catch (error) {
+            vscode.window.showErrorMessage(`Error running sweetpad: launch task: ${error.message}`);
+        }
+    })));
+    // Register command to run sweetpad: launch task
+    context.subscriptions.push(vscode.commands.registerCommand('swift-development.runSweetpadBuild', () => __awaiter(this, void 0, void 0, function* () {
+        try {
+            const task = (yield vscode.tasks.fetchTasks()).find(t => t.name === 'sweetpad: build');
             if (task) {
                 vscode.tasks.executeTask(task);
                 vscode.window.showInformationMessage('Running sweetpad: launch task.');
