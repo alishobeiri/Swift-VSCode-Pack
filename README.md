@@ -1,6 +1,6 @@
 ## Setup Instructions
 
-To get started developing Swift in VSCode, we need to configure [SweetPad](https://marketplace.visualstudio.com/items?itemName=sweetpad.sweetpad), [Trigger tasks on Save](https://marketplace.visualstudio.com/items?itemName=Gruntfuggly.triggertaskonsave), [SourceKit-LSP](https://marketplace.visualstudio.com/items?itemName=pvasek.sourcekit-lsp--dev-unofficial) and [CodeLLDB](https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb). 
+To get started developing Swift in VSCode, we need to configure [SweetPad](https://marketplace.visualstudio.com/items?itemName=sweetpad.sweetpad), [Trigger tasks on Save](https://marketplace.visualstudio.com/items?itemName=Gruntfuggly.triggertaskonsave), [Swift](https://marketplace.visualstudio.com/items?itemName=sswg.swift-lang) and [CodeLLDB](https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb). 
 
 You can either install the extension pack and follow along with the walkthrough setup (Cmd + Shift + P) > (Help: Welcome) or follow along by using the following instructions:
 
@@ -36,37 +36,49 @@ brew install ios-deploy
 brew install --cask tuist
 ```
 
-### 2. Add the following to `settings.json`
+### 2. Create a `.vscode` folder
 
+### 3. Add the following to `.vscode/settings.json`
 ```json
 {
-  "triggerTaskOnSave.runonsave": {
-    "sweetpad: build": [
-      "**/*.swift"
-    ]
-  },
-  "triggerTaskOnSave.on": true,
-  "triggerTaskOnSave.showNotifications": false,
-  "triggerTaskOnSave.restart": true,
-  "triggerTaskOnSave.delay": 1000,
-  "triggerTaskOnSave.resultIndicatorResetTimeout": 5,
-  "workbench.colorCustomizations": {},
-  "[swift]": {
-    "editor.defaultFormatter": "sweetpad.sweetpad",
-    "editor.formatOnSave": true,
-    "editor.tabSize": 4,
-    "editor.insertSpaces": true,
+    "triggerTaskOnSave.tasks": {
+        "sweetpad: build": [
+            "**/*.swift"
+        ]
+    },
+    "triggerTaskOnSave.on": true,
+    "triggerTaskOnSave.showNotifications": false,
+    "triggerTaskOnSave.restart": true,
+    "triggerTaskOnSave.delay": 1000,
+    "triggerTaskOnSave.resultIndicatorResetTimeout": 5,
+    "workbench.colorCustomizations": {},
     "sweetpad.format.args": [
-      "--quiet",
-      "--line-length", "100",
-      "--indentation", "spaces", "4",
-      "${file}"
-    ]
-  }
+        "--in-place",
+        "--configuration",
+        ".vscode/.swift-format",
+        "${file}"
+    ],
+    "[swift]": {
+        "editor.defaultFormatter": "sweetpad.sweetpad",
+        "editor.formatOnSave": true,
+    }
 }
 ```
 
-### 3. Add the following to `launch.json`
+### 4. Add the following to `.vscode/.swift-format`
+```json
+{
+    "indentation" : {
+      "spaces" : 4
+    },
+    "insertSpaces" : true,
+    "spacesAroundRangeFormationOperators" : false,
+    "tabWidth" : 8,
+    "version" : 1
+}
+```
+
+### 5. Add the following to `.vscode/launch.json`
 ```json
 {
   "version": "0.2.0",
@@ -81,52 +93,71 @@ brew install --cask tuist
 }
 ```
 
-### 4. Add the following to `tasks.json`
+### 6. Add the following to `.vscode/tasks.json`
 ```json
 {
-  "version": "2.0.0",
-  "tasks": [
-    {
-      "type": "sweetpad",
-      "action": "build",
-      "problemMatcher": [
-        "$sweetpad-watch",
-        "$sweetpad-xcodebuild-default",
-        "$sweetpad-xcbeautify-errors",
-        "$sweetpad-xcbeautify-warnings"
-      ],
-      "label": "sweetpad: build",
-      "detail": "Build the app"
-    },
-    {
-      "type": "sweetpad",
-      "action": "launch",
-      "problemMatcher": [
-        "$sweetpad-watch",
-        "$sweetpad-xcodebuild-default",
-        "$sweetpad-xcbeautify-errors",
-        "$sweetpad-xcbeautify-warnings"
-      ],
-      "label": "sweetpad: launch",
-      "detail": "Build and Launch the app"
-    },
-    {
-      "type": "sweetpad",
-      "action": "clean",
-      "problemMatcher": [
-        "$sweetpad-watch",
-        "$sweetpad-xcodebuild-default",
-        "$sweetpad-xcbeautify-errors",
-        "$sweetpad-xcbeautify-warnings"
-      ],
-      "label": "sweetpad: clean",
-      "detail": "Clean the app"
-    }
-  ]
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "sweetpad",
+            "action": "build",
+            "problemMatcher": [
+                "$sweetpad-watch",
+                "$sweetpad-xcodebuild-default",
+                "$sweetpad-xcbeautify-errors",
+                "$sweetpad-xcbeautify-warnings"
+            ],
+            "label": "sweetpad: build",
+            "detail": "Build the app",
+            "isBackground": true,
+            "presentation": {
+                "reveal": "silent",
+                "panel": "dedicated",
+                "showReuseMessage": false,
+                "clear": true
+            }
+        },
+        {
+            "type": "sweetpad",
+            "action": "launch",
+            "problemMatcher": [
+                "$sweetpad-watch",
+                "$sweetpad-xcodebuild-default",
+                "$sweetpad-xcbeautify-errors",
+                "$sweetpad-xcbeautify-warnings"
+            ],
+            "label": "sweetpad: launch",
+            "detail": "Build and Launch the app",
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "showReuseMessage": true,
+                "clear": false
+            }
+        },
+        {
+            "type": "sweetpad",
+            "action": "clean",
+            "problemMatcher": [
+                "$sweetpad-watch",
+                "$sweetpad-xcodebuild-default",
+                "$sweetpad-xcbeautify-errors",
+                "$sweetpad-xcbeautify-warnings"
+            ],
+            "label": "sweetpad: clean",
+            "detail": "Clean the app",
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "showReuseMessage": true,
+                "clear": false
+            }
+        }
+    ]
 }
 ```
 
-### 5. Generate Build Server Config for Autocompletion
+### 7. Generate Build Server Config for Autocompletion
 Press `Cmd + P` and run:
 ```
 SweetPad: Create Build Server Config

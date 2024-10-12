@@ -1,7 +1,7 @@
 {
   "name": "swift-development",
   "displayName": "VSCode Swift Development Pack",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "publisher": "alishobeiri",
   "icon": "media/logo.png",
   "repository": {
@@ -17,7 +17,7 @@
     "vadimcn.vscode-lldb",
     "Gruntfuggly.triggertaskonsave",
     "sweetpad.sweetpad",
-    "pvasek.sourcekit-lsp--dev-unofficial"
+    "sswg.swift-lang"
   ],
   "main": "./out/src/extension.js",
   "activationEvents": [

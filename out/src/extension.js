@@ -36,6 +36,13 @@ exports.activate = activate;
 const vscode = __importStar(require("vscode"));
 const path = __importStar(require("path"));
 const fs = __importStar(require("fs"));
+// Helper function to ensure .vscode directory exists
+const ensureVscodeDirectoryExists = () => {
+    const vscodePath = path.join(vscode.workspace.rootPath || '', '.vscode');
+    if (!fs.existsSync(vscodePath)) {
+        fs.mkdirSync(vscodePath);
+    }
+};
 function cleanJSON(jsonString) {
     return jsonString.replace(/^\uFEFF/, '');
 }
@@ -73,6 +80,7 @@ function activate(context) {
     })));
     // Register command for generating settings.json
     context.subscriptions.push(vscode.commands.registerCommand('swift-development.generateSettings', () => __awaiter(this, void 0, void 0, function* () {
+        ensureVscodeDirectoryExists();
         const settingsPath = path.join(vscode.workspace.rootPath || '', '.vscode', 'settings.json');
         const newSettings = {
             "triggerTaskOnSave.tasks": {
@@ -122,6 +130,7 @@ function activate(context) {
         }
     })));
     context.subscriptions.push(vscode.commands.registerCommand('swift-development.generateLaunch', () => __awaiter(this, void 0, void 0, function* () {
+        ensureVscodeDirectoryExists();
         const settingsPath = path.join(vscode.workspace.rootPath || '', '.vscode', 'launch.json');
         const newLaunchConfig = {
             "version": "0.2.0",
@@ -163,6 +172,7 @@ function activate(context) {
         }
     })));
     context.subscriptions.push(vscode.commands.registerCommand('swift-development.generateTasks', () => __awaiter(this, void 0, void 0, function* () {
+        ensureVscodeDirectoryExists();
         const settingsPath = path.join(vscode.workspace.rootPath || '', '.vscode', 'tasks.json');
         const newTaskConfig = {
             "version": "2.0.0",
@@ -254,6 +264,7 @@ function activate(context) {
     })));
     // Generate Swift format settings
     context.subscriptions.push(vscode.commands.registerCommand('swift-development.generateFormatterConfig', () => __awaiter(this, void 0, void 0, function* () {
+        ensureVscodeDirectoryExists();
         const swiftFormatSettings = {
             "indentation": {
                 "spaces": 4
