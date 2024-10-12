@@ -75,8 +75,10 @@ function activate(context) {
     context.subscriptions.push(vscode.commands.registerCommand('swift-development.generateSettings', () => __awaiter(this, void 0, void 0, function* () {
         const settingsPath = path.join(vscode.workspace.rootPath || '', '.vscode', 'settings.json');
         const newSettings = {
-            "triggerTaskOnSave.runonsave": {
-                "sweetpad: build": ["**/*.swift"]
+            "triggerTaskOnSave.tasks": {
+                "sweetpad: build": [
+                    "**/*.swift"
+                ]
             },
             "triggerTaskOnSave.on": true,
             "triggerTaskOnSave.showNotifications": false,
@@ -84,17 +86,15 @@ function activate(context) {
             "triggerTaskOnSave.delay": 1000,
             "triggerTaskOnSave.resultIndicatorResetTimeout": 5,
             "workbench.colorCustomizations": {},
+            "sweetpad.format.args": [
+                "--in-place",
+                "--configuration",
+                ".vscode/.swift-format",
+                "${file}"
+            ],
             "[swift]": {
                 "editor.defaultFormatter": "sweetpad.sweetpad",
                 "editor.formatOnSave": true,
-                "editor.tabSize": 4,
-                "editor.insertSpaces": true,
-                "sweetpad.format.args": [
-                    "--quiet",
-                    "--line-length", "100",
-                    "--indentation", "spaces", "4",
-                    "${file}"
-                ]
             }
         };
         try {
@@ -177,7 +177,14 @@ function activate(context) {
                         "$sweetpad-xcbeautify-warnings"
                     ],
                     "label": "sweetpad: build",
-                    "detail": "Build the app"
+                    "detail": "Build the app",
+                    "isBackground": true,
+                    "presentation": {
+                        "reveal": "silent",
+                        "panel": "dedicated",
+                        "showReuseMessage": false,
+                        "clear": true
+                    }
                 },
                 {
                     "type": "sweetpad",
@@ -189,7 +196,13 @@ function activate(context) {
                         "$sweetpad-xcbeautify-warnings"
                     ],
                     "label": "sweetpad: launch",
-                    "detail": "Build and Launch the app"
+                    "detail": "Build and Launch the app",
+                    "presentation": {
+                        "reveal": "always",
+                        "panel": "dedicated",
+                        "showReuseMessage": true,
+                        "clear": false
+                    }
                 },
                 {
                     "type": "sweetpad",
@@ -201,7 +214,13 @@ function activate(context) {
                         "$sweetpad-xcbeautify-warnings"
                     ],
                     "label": "sweetpad: clean",
-                    "detail": "Clean the app"
+                    "detail": "Clean the app",
+                    "presentation": {
+                        "reveal": "always",
+                        "panel": "dedicated",
+                        "showReuseMessage": true,
+                        "clear": false
+                    }
                 }
             ]
         };
@@ -231,6 +250,32 @@ function activate(context) {
         }
         catch (error) {
             vscode.window.showErrorMessage(`Error updating tasks.json: ${error.message}`);
+        }
+    })));
+    // Generate Swift format settings
+    context.subscriptions.push(vscode.commands.registerCommand('swift-development.generateFormatterConfig', () => __awaiter(this, void 0, void 0, function* () {
+        const swiftFormatSettings = {
+            "indentation": {
+                "spaces": 4
+            },
+            "insertSpaces": true,
+            "spacesAroundRangeFormationOperators": false,
+            "tabWidth": 8,
+            "version": 1
+        };
+        const settingsPath = path.join(vscode.workspace.rootPath || '', '.vscode', '.swift-format');
+        try {
+            // Ensure .vscode directory exists
+            const vscodeDir = path.dirname(settingsPath);
+            if (!fs.existsSync(vscodeDir)) {
+                fs.mkdirSync(vscodeDir);
+            }
+            // Write swift format settings to .swift-format
+            fs.writeFileSync(settingsPath, JSON.stringify(swiftFormatSettings, null, 4));
+            vscode.window.showInformationMessage(`.swift-format has been created/updated successfully.`);
+        }
+        catch (error) {
+            vscode.window.showErrorMessage(`Error updating .swift-format: ${error.message}`);
         }
     })));
     // Register command to run sweetpad: launch task

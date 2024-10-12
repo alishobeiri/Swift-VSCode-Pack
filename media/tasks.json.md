@@ -12,7 +12,14 @@
                 "$sweetpad-xcbeautify-warnings"
             ],
             "label": "sweetpad: build",
-            "detail": "Build the app"
+            "detail": "Build the app",
+            "isBackground": true,
+            "presentation": {
+                "reveal": "silent",
+                "panel": "dedicated",
+                "showReuseMessage": false,
+                "clear": true
+            }
         },
         {
             "type": "sweetpad",
@@ -24,7 +31,13 @@
                 "$sweetpad-xcbeautify-warnings"
             ],
             "label": "sweetpad: launch",
-            "detail": "Build and Launch the app"
+            "detail": "Build and Launch the app",
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "showReuseMessage": true,
+                "clear": false
+            }
         },
         {
             "type": "sweetpad",
@@ -36,7 +49,13 @@
                 "$sweetpad-xcbeautify-warnings"
             ],
             "label": "sweetpad: clean",
-            "detail": "Clean the app"
+            "detail": "Clean the app",
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "showReuseMessage": true,
+                "clear": false
+            }
         }
     ]
 }

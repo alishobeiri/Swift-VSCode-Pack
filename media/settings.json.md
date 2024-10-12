@@ -11,20 +11,15 @@
     "triggerTaskOnSave.delay": 1000,
     "triggerTaskOnSave.resultIndicatorResetTimeout": 5,
     "workbench.colorCustomizations": {},
+    "sweetpad.format.args": [
+        "--in-place",
+        "--configuration",
+        ".vscode/.swift-format",
+        "${file}"
+    ],
     "[swift]": {
         "editor.defaultFormatter": "sweetpad.sweetpad",
         "editor.formatOnSave": true,
-        "editor.tabSize": 4,
-        "editor.insertSpaces": true,
-        "sweetpad.format.args": [
-            "--quiet",
-            "--line-length",
-            "100",
-            "--indentation",
-            "spaces",
-            "4",
-            "${file}"
-        ]
-    }   
+    }
 }
 ```

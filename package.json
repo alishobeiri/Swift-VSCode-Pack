@@ -88,6 +88,17 @@
             ]
           },
           {
+            "id": "add-swift-format-settings",
+            "title": "Add Swift format settings",
+            "description": "To automatically format Swift code on save, we must add a `.swift-format` configuration detailing our formatting rules to our `.vscode` folder:\n[Add `.swift-format`](command:swift-development.generateFormatterConfig)",
+            "media": {
+              "markdown": "media/swift-format.md"
+            },
+            "completionEvents": [
+              "onCommand:swift-development.generateFormatterConfig"
+            ]
+          },
+          {
             "id": "add-launch-config",
             "title": "Add Launch Configuration",
             "description": "Add debug configurations to the VSCode launch.json:\n[Configure `launch.json`](command:swift-development.generateLaunch)",
