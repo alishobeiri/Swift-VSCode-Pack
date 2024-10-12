@@ -40,11 +40,13 @@
   "keybindings": [
     {
       "command": "swift-development.runSweetpadBuild",
-      "mac": "cmd+ctrl+b"
+      "mac": "cmd+ctrl+b",
+      "key": "ctrl+alt+b"
     },
     {
       "command": "swift-development.runSweetpadLaunch",
-      "mac": "cmd+ctrl+r"
+      "mac": "cmd+r",
+      "key": "ctrl+r"
     }
   ],
   "contributes": {
