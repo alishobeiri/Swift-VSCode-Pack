@@ -55,6 +55,22 @@ function activate(context) {
         vscode.commands.executeCommand('workbench.action.openWalkthrough', 'alishobeiri.swift-development#swiftdevelopment-getting-started');
     });
     context.subscriptions.push(openWelcomeCommand);
+    // Register command for each step in the package.json walkthrough
+    context.subscriptions.push(vscode.commands.registerCommand('swift-development.installTools', () => __awaiter(this, void 0, void 0, function* () {
+        const scriptPath = path.join(context.extensionPath, 'media', 'install_tools.sh');
+        // Confirm the operating system is macOS
+        if (process.platform !== 'darwin') {
+            vscode.window.showErrorMessage("The installation script is designed to run on macOS only.");
+            return;
+        }
+        // Create a terminal and show it
+        const terminal = vscode.window.createTerminal('Swift Development Tools Installation');
+        terminal.show();
+        // Execute the shell script by sending text to the terminal
+        terminal.sendText(`sh "${scriptPath}"`);
+        // Optionally, you may want to provide a notification after sending the command
+        vscode.window.showInformationMessage('Started Swift development tools installation.');
+    })));
     // Register command for generating settings.json
     context.subscriptions.push(vscode.commands.registerCommand('swift-development.generateSettings', () => __awaiter(this, void 0, void 0, function* () {
         const settingsPath = path.join(vscode.workspace.rootPath || '', '.vscode', 'settings.json');
