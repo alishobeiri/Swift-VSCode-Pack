@@ -322,6 +322,9 @@ function activate(context) {
                 vscode.window.showErrorMessage(`Error running sweetpad: launch task: ${error.message}`);
             }
         })));
-        yield vscode.commands.executeCommand('workbench.action.openWalkthrough', 'alishobeiri.swift-development#swiftdevelopment-getting-started');
+        if (context.globalState.get('isFirstActivation') === undefined) {
+            context.globalState.update('isFirstActivation', false);
+            yield vscode.commands.executeCommand('workbench.action.openWalkthrough', 'alishobeiri.swift-development#swiftdevelopment-getting-started');
+        }
     });
 }

@@ -321,7 +321,6 @@ export async function activate(context: vscode.ExtensionContext) {
         }
     }));
 
-    context.globalState.update('isFirstActivation', undefined);
     if (context.globalState.get('isFirstActivation') === undefined) {
         context.globalState.update('isFirstActivation', false);
         await vscode.commands.executeCommand('workbench.action.openWalkthrough', 'alishobeiri.swift-development#swiftdevelopment-getting-started');
