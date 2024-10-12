@@ -24,7 +24,7 @@ function deepMerge(target: any, source: any) {
     return target;
 }
 
-export function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext) {
     console.log('Congratulations, your extension "swift-development" is now active!');
 
     const openWelcomeCommand = vscode.commands.registerCommand('swift-development.welcome', () => {
@@ -319,6 +319,12 @@ export function activate(context: vscode.ExtensionContext) {
         } catch (error) {
             vscode.window.showErrorMessage(`Error running sweetpad: launch task: ${(error as any).message}`);
         }
-    }));    
+    }));
+
+    context.globalState.update('isFirstActivation', undefined);
+    if (context.globalState.get('isFirstActivation') === undefined) {
+        context.globalState.update('isFirstActivation', false);
+        await vscode.commands.executeCommand('workbench.action.openWalkthrough', 'alishobeiri.swift-development#swiftdevelopment-getting-started');
+    }    
 }
 
