@@ -321,8 +321,49 @@ export async function activate(context: vscode.ExtensionContext) {
         }
     }));
 
-    if (context.globalState.get('isFirstActivation') === undefined) {
-        context.globalState.update('isFirstActivation', false);
+    // Function to run all steps
+    const runAllStepsCommand = vscode.commands.registerCommand('swift-development.runAllSteps', async () => {
+        await vscode.commands.executeCommand('swift-development.installTools');
+        await vscode.commands.executeCommand('swift-development.generateSettings');
+        await vscode.commands.executeCommand('sweetpad.build.genereateBuildServerConfig');
+        await vscode.commands.executeCommand('swift-development.generateFormatterConfig');
+        await vscode.commands.executeCommand('swift-development.generateLaunch');
+        await vscode.commands.executeCommand('swift-development.generateTasks');
+        await vscode.commands.executeCommand('swift-development.runSweetpadLaunch');
+    });
+    context.subscriptions.push(runAllStepsCommand);
+    
+    // Check for xcodeproj files in each workspace folder on activation
+    const firstTimeKey = 'isFirstActivation';
+    const hasOpenedXcodeprojKeyPrefix = 'hasOpenedXcodeproj_';
+    const workspaceFolders = vscode.workspace.workspaceFolders;
+
+    if (workspaceFolders) {
+        for (const folder of workspaceFolders) {
+            const rootPath = folder.uri.fsPath;
+            const hasOpenedXcodeprojKey = `${hasOpenedXcodeprojKeyPrefix}${rootPath}`;
+            
+            if (!context.globalState.get(hasOpenedXcodeprojKey) && fs.existsSync(rootPath)) {
+                if (fs.readdirSync(rootPath).some(file => file.endsWith('.xcodeproj'))) {
+                    const runAllSteps = await vscode.window.showInformationMessage(
+                        'This appears to be your first time opening an Xcode project file in this workspace.\n\nWould you like to prepare the Swift Development environment?',
+                        { modal: true },
+                        'Yes',
+                        'No'
+                    );
+                    if (runAllSteps === 'Yes') {
+                        await vscode.commands.executeCommand('swift-development.runAllSteps');
+                        context.globalState.update(hasOpenedXcodeprojKey, true);
+                    } else {
+                        context.globalState.update(hasOpenedXcodeprojKey, true);
+                    }
+                }
+            }
+        }
+    }
+
+    if (context.globalState.get(firstTimeKey) === undefined) {
+        context.globalState.update(firstTimeKey, false);
         await vscode.commands.executeCommand('workbench.action.openWalkthrough', 'alishobeiri.swift-development#swiftdevelopment-getting-started');
     }    
 }
