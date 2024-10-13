@@ -341,7 +341,6 @@ function activate(context) {
             for (const folder of workspaceFolders) {
                 const rootPath = folder.uri.fsPath;
                 const hasOpenedXcodeprojKey = `${hasOpenedXcodeprojKeyPrefix}${rootPath}`;
-                context.globalState.update(hasOpenedXcodeprojKey, false);
                 if (!context.globalState.get(hasOpenedXcodeprojKey) && fs.existsSync(rootPath)) {
                     if (fs.readdirSync(rootPath).some(file => file.endsWith('.xcodeproj'))) {
                         const runAllSteps = yield vscode.window.showInformationMessage('This appears to be your first time opening an Xcode project file in this workspace.\n\nWould you like to prepare the Swift Development environment?', { modal: true }, 'Yes', 'No');
