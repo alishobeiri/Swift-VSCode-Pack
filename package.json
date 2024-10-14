@@ -1,8 +1,8 @@
 {
   "name": "swift-development",
   "displayName": "Swift Development",
-  "description": "Develop Swift apps in Visual Studio Code or Cursor. Complete with simulator and debug support. Supports syntax highlighting, autocompletion, building, build errors, linting, Swift formatting and more",
-  "version": "0.0.21",
+  "description": "Develop Swift apps in Visual Studio Code or Cursor. Complete with simulator and debug support. Supports syntax highlighting, autocompletion, building, build errors, linting, Swift formatting and more.",
+  "version": "0.0.22",
   "publisher": "alishobeiri",
   "icon": "media/logo.png",
   "repository": {
@@ -12,6 +12,10 @@
     "vscode": "^1.34.0"
   },
   "categories": [
+    "AI",
+    "Language Packs",
+    "Programming Languages",
+    "Debuggers",
     "Extension Packs"
   ],
   "extensionPack": [
