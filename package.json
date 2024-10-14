@@ -1,7 +1,7 @@
 {
   "name": "swift-development",
   "displayName": "Swift Development",
-  "description": "Swift language server, autocompletion, building, build errors, linting, Swift formating, Swift Cursor, Swift VSCode, Swift AI",
+  "description": "Develop Swift apps in Visual Studio Code or Cursor. Complete with simulator support. Also with debug support. Supports syntax highlighting, autocompletion, building, build errors, linting, Swift formatting and more",
   "version": "0.0.18",
   "publisher": "alishobeiri",
   "icon": "media/logo.png",
