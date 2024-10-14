@@ -158,7 +158,7 @@ brew install --cask tuist
 ```
 
 ### 7. Generate Build Server Config for Autocompletion
-Press `Cmd + P` and run:
+Press `Cmd + Shift + P` and run:
 ```
 SweetPad: Create Build Server Config
 ```

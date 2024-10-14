@@ -321,6 +321,24 @@ export async function activate(context: vscode.ExtensionContext) {
         }
     }));
 
+    // Recursive function to check for xcodeproj files in a directory and its subdirectories
+    function containsXcodeproj(dir: string): boolean {
+        const files = fs.readdirSync(dir);
+        for (const file of files) {
+            const fullPath = path.join(dir, file);
+            // Check if it's a directory
+            if (fs.statSync(fullPath).isDirectory()) {
+                // Recursive call
+                if (containsXcodeproj(fullPath)) {
+                    return true;
+                }
+            } else if (file.endsWith('.xcodeproj')) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     // Function to run all steps
     const runAllStepsCommand = vscode.commands.registerCommand('swift-development.runAllSteps', async () => {
         await vscode.commands.executeCommand('swift-development.installTools');
@@ -332,8 +350,7 @@ export async function activate(context: vscode.ExtensionContext) {
         await vscode.commands.executeCommand('swift-development.runSweetpadLaunch');
     });
     context.subscriptions.push(runAllStepsCommand);
-    
-    // Check for xcodeproj files in each workspace folder on activation
+
     const firstTimeKey = 'isFirstActivation';
     const hasOpenedXcodeprojKeyPrefix = 'hasOpenedXcodeproj_';
     const workspaceFolders = vscode.workspace.workspaceFolders;
@@ -342,9 +359,9 @@ export async function activate(context: vscode.ExtensionContext) {
         for (const folder of workspaceFolders) {
             const rootPath = folder.uri.fsPath;
             const hasOpenedXcodeprojKey = `${hasOpenedXcodeprojKeyPrefix}${rootPath}`;
-            
+
             if (!context.globalState.get(hasOpenedXcodeprojKey) && fs.existsSync(rootPath)) {
-                if (fs.readdirSync(rootPath).some(file => file.endsWith('.xcodeproj'))) {
+                if (containsXcodeproj(rootPath)) {
                     const runAllSteps = await vscode.window.showInformationMessage(
                         'This appears to be your first time opening an Xcode project file in this workspace.\n\nWould you like to prepare the Swift Development environment?',
                         { modal: true },
@@ -353,10 +370,8 @@ export async function activate(context: vscode.ExtensionContext) {
                     );
                     if (runAllSteps === 'Yes') {
                         await vscode.commands.executeCommand('swift-development.runAllSteps');
-                        context.globalState.update(hasOpenedXcodeprojKey, true);
-                    } else {
-                        context.globalState.update(hasOpenedXcodeprojKey, true);
                     }
+                    context.globalState.update(hasOpenedXcodeprojKey, true);
                 }
             }
         }
