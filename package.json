@@ -1,7 +1,7 @@
 {
   "name": "swift-development",
-  "displayName": "Swift Development Pack",
-  "description": "Swift language server, autocompletion, building, build errors, linting, Swift formating, Swift Cursor, Swift VSCode",
+  "displayName": "Swift Development Environment",
+  "description": "Swift language server, autocompletion, building, build errors, linting, Swift formating, Swift Cursor, Swift VSCode, Swift AI",
   "version": "0.0.17",
   "publisher": "alishobeiri",
   "icon": "media/logo.png",
