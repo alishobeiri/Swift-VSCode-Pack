@@ -328,12 +328,14 @@ export async function activate(context: vscode.ExtensionContext) {
             const fullPath = path.join(dir, file);
             // Check if it's a directory
             if (fs.statSync(fullPath).isDirectory()) {
-                // Recursive call
+                // Check if the directory name ends with '.xcodeproj'
+                if (file.endsWith('.xcodeproj')) {
+                    return true;
+                }
+                // Recursive call to check inside subdirectories
                 if (containsXcodeproj(fullPath)) {
                     return true;
                 }
-            } else if (file.endsWith('.xcodeproj')) {
-                return true;
             }
         }
         return false;
@@ -359,7 +361,7 @@ export async function activate(context: vscode.ExtensionContext) {
         for (const folder of workspaceFolders) {
             const rootPath = folder.uri.fsPath;
             const hasOpenedXcodeprojKey = `${hasOpenedXcodeprojKeyPrefix}${rootPath}`;
-
+            context.globalState.update(hasOpenedXcodeprojKey, false);
             if (!context.globalState.get(hasOpenedXcodeprojKey) && fs.existsSync(rootPath)) {
                 if (containsXcodeproj(rootPath)) {
                     const runAllSteps = await vscode.window.showInformationMessage(
