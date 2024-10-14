@@ -1,6 +1,6 @@
 {
   "name": "swift-development",
-  "displayName": "Swift Development Environment",
+  "displayName": "Swift Development",
   "description": "Swift language server, autocompletion, building, build errors, linting, Swift formating, Swift Cursor, Swift VSCode, Swift AI",
   "version": "0.0.18",
   "publisher": "alishobeiri",
