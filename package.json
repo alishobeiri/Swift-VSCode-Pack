@@ -2,14 +2,14 @@
   "name": "swift-development",
   "displayName": "Swift Development Pack",
   "description": "Swift language server, autocompletion, building, build errors, linting, Swift formating, Swift Cursor, Swift VSCode",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "publisher": "alishobeiri",
   "icon": "media/logo.png",
   "repository": {
     "url": "https://github.com/alishobeiri/Swift-VSCode-Pack"
   },
   "engines": {
-    "vscode": "^1.94.0"
+    "vscode": "^1.34.0"
   },
   "categories": [
     "Extension Packs"
