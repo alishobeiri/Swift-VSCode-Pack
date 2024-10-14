@@ -18,6 +18,12 @@
     "Debuggers",
     "Extension Packs"
   ],
+  "keywords": [
+    "swift",
+    "ios",
+    "language",
+    "ios development"
+  ],
   "extensionPack": [
     "vadimcn.vscode-lldb",
     "Gruntfuggly.triggertaskonsave",
