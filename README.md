@@ -2,7 +2,7 @@
 
 To get started developing Swift in VSCode, we need to configure [SweetPad](https://marketplace.visualstudio.com/items?itemName=sweetpad.sweetpad), [Trigger tasks on Save](https://marketplace.visualstudio.com/items?itemName=Gruntfuggly.triggertaskonsave), [Swift](https://marketplace.visualstudio.com/items?itemName=sswg.swift-lang) and [CodeLLDB](https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb). 
 
-If you open a XCode project in VSCode, you will be prompted with a modal to prepare the project for Swift development with VSCode. You can also follow along with the walkthrough setup found by pressing (Cmd + Shift + P) > (Help: Welcome) or follow along by using the following instructions:
+If you open a Xcode project in VSCode, you will be prompted with a modal to prepare the project for Swift development with VSCode. You can also follow along with the walkthrough setup found by pressing (Cmd + Shift + P) > (Help: Welcome) or follow along by using the following instructions:
 
 ### 1. Install all necessary tools
 To ensure that you have all the necessary tools installed for working with SweetPad, please run the following commands to install the required software using Homebrew:
