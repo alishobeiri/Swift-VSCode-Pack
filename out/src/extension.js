@@ -293,13 +293,28 @@ function activate(context) {
         // Register command to run sweetpad: launch task
         context.subscriptions.push(vscode.commands.registerCommand('swift-development.runSweetpadLaunch', () => __awaiter(this, void 0, void 0, function* () {
             try {
-                const task = (yield vscode.tasks.fetchTasks()).find(t => t.name === 'sweetpad: launch');
+                const taskName = 'sweetpad: launch';
+                const taskExecutions = vscode.tasks.taskExecutions;
+                // Find the task execution if it is already running
+                for (const execution of taskExecutions) {
+                    if (execution.task.name === taskName) {
+                        // Terminate the running task
+                        execution.terminate();
+                        // Optionally, you can show a message that the task was terminated
+                        vscode.window.showInformationMessage(`Terminating the existing ${taskName} task.`);
+                        // Wait for the task to properly terminate before starting a new one
+                        yield new Promise(resolve => setTimeout(resolve, 1000));
+                        break;
+                    }
+                }
+                // Fetch all tasks and find the specific task
+                const task = (yield vscode.tasks.fetchTasks()).find(t => t.name === taskName);
                 if (task) {
                     vscode.tasks.executeTask(task);
-                    vscode.window.showInformationMessage('Running sweetpad: launch task.');
+                    vscode.window.showInformationMessage(`Running ${taskName} task.`);
                 }
                 else {
-                    vscode.window.showWarningMessage('Could not find task labeled "sweetpad: launch". Please ensure tasks.json is properly configured.');
+                    vscode.window.showWarningMessage(`Could not find task labeled "${taskName}". Please ensure tasks.json is properly configured.`);
                 }
             }
             catch (error) {
@@ -359,7 +374,6 @@ function activate(context) {
             for (const folder of workspaceFolders) {
                 const rootPath = folder.uri.fsPath;
                 const hasOpenedXcodeprojKey = `${hasOpenedXcodeprojKeyPrefix}${rootPath}`;
-                context.globalState.update(hasOpenedXcodeprojKey, false);
                 if (!context.globalState.get(hasOpenedXcodeprojKey) && fs.existsSync(rootPath)) {
                     if (containsXcodeproj(rootPath)) {
                         const runAllSteps = yield vscode.window.showInformationMessage('This appears to be your first time opening an Xcode project file in this workspace.\n\nWould you like to prepare the Swift Development environment?', { modal: true }, 'Yes', 'No');
