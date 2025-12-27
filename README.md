@@ -27,18 +27,37 @@ This extension pack bundles four essential extensions, pre-configured to work to
 
 ## Quick Start
 
-The easiest way to get started is with the interactive walkthrough. When you open an Xcode project in VSCode or Cursor, you'll be prompted to set up your development environment.
+Getting started is simple - just open an Xcode project and follow the setup prompt:
 
-1. Install this extension pack from the marketplace
-2. Open any Xcode project (`.xcodeproj` file)
-3. Follow the interactive walkthrough that appears
-4. Start coding - everything is configured for you
+1. **Install this extension pack** from the VSCode marketplace
+2. **Open an Xcode project** (any folder containing a `.xcodeproj` file)
+3. **A popup will automatically appear** asking how you'd like to set up Swift Development:
+   - **Auto Setup (Recommended)** - Automatically installs tools and configures your project
+   - **Open Walkthrough** - Step-by-step guided setup with explanations
+   - **Not Now** - Skip setup for now
+4. **That's it!** Your environment is configured and ready to use
 
-Or access the walkthrough manually: Press `Cmd+Shift+P` (`Ctrl+Shift+P` on Windows/Linux) and select "Help: Welcome", then choose "Swift Development for VSCode".
+The popup appears automatically the first time you open an Xcode project. If you want to access the walkthrough later, press `Cmd+Shift+P` (`Ctrl+Shift+P` on Windows/Linux) and select "Help: Welcome", then choose "Swift Development for VSCode".
 
 ## Detailed Setup Instructions
 
 For advanced users who prefer manual configuration, or if you want to understand what's being set up, follow these detailed instructions.
+
+### Prerequisites
+
+Before you begin, ensure you have:
+
+- **Xcode** installed from the Mac App Store (required for Swift compiler, iOS SDK, and build tools)
+- **Xcode Command Line Tools** installed - run: `xcode-select --install`
+
+To verify your installation:
+```bash
+# Check Xcode installation
+xcode-select -p
+
+# Check Swift is available
+swift --version
+```
 
 ### 1. Install all necessary tools
 
@@ -126,12 +145,20 @@ brew install --cask tuist
     {
       "type": "sweetpad-lldb",
       "request": "launch",
-      "name": "Attach to running app (SweetPad)",
+      "name": "Build and Launch (SweetPad)",
       "preLaunchTask": "sweetpad: launch"
+    },
+    {
+      "type": "sweetpad-lldb",
+      "request": "attach",
+      "name": "Attach to Running App (SweetPad)",
+      "description": "Use this if the app is already running to avoid rebuild"
     }
   ]
 }
 ```
+
+**Note:** If your simulator is already running, use the "Attach to Running App" configuration to avoid hanging on the build task.
 
 ### 6. Add the following to `.vscode/tasks.json`
 
@@ -222,18 +249,29 @@ If all has gone well, you should be ready to develop Swift in VSCode!
 - `Cmd+R` (Mac) / `Ctrl+R` (Windows/Linux) - Build and launch your app
 - `Cmd+Ctrl+B` (Mac) / `Ctrl+Alt+B` (Windows/Linux) - Build your project
 
+### Debugging Configurations
+
+This extension provides two debug configurations:
+
+1. **Build and Launch (SweetPad)** - Use this for a fresh start. Builds your project and launches it in the simulator.
+2. **Attach to Running App (SweetPad)** - Use this when your app is already running in the simulator. This avoids rebuilding and attaches the debugger directly.
+
+**Tip:** If the debugger hangs while waiting for the preLaunchTask, your simulator may already be running. Press `Stop` and use the "Attach to Running App" configuration instead.
+
 ### Common Workflows
 
 - Opening an Xcode project triggers setup
 - Saving a Swift file builds the project
 - Use the debugger to set breakpoints and inspect variables
 - Format code on save
+- Switch between debug configurations based on whether simulator is running
 
 ## Requirements
 
 - macOS (required for iOS development and Xcode tools)
 - Visual Studio Code 1.34.0 or later, or Cursor
-- Xcode installed (for iOS Simulator and build tools)
+- **Xcode** (download from Mac App Store - provides Swift compiler, iOS SDK, and build tools)
+- **Xcode Command Line Tools** (install with: `xcode-select --install`)
 - Homebrew (for installing development tools)
 
 ## Support & Contributing

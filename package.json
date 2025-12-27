@@ -2,7 +2,7 @@
   "name": "swift-development",
   "displayName": "Swift Development",
   "description": "Develop Swift apps in Visual Studio Code or Cursor. Complete with simulator and debug support. Supports syntax highlighting, autocompletion, building, build errors, linting, Swift formatting and more.",
-  "version": "0.0.30",
+  "version": "0.0.34",
   "publisher": "alishobeiri",
   "icon": "media/logo.png",
   "repository": {
@@ -28,29 +28,12 @@
     "vadimcn.vscode-lldb",
     "Gruntfuggly.triggertaskonsave",
     "sweetpad.sweetpad",
-    "sswg.swift-lang"
+    "swiftlang.swift-vscode"
   ],
   "main": "./out/src/extension.js",
   "activationEvents": [
     "onCommand:swift-development.welcome",
     "onStartupFinished"
-  ],
-  "commands": [
-    {
-      "command": "swift-development.build",
-      "title": "Build",
-      "category": "Swift Development"
-    },
-    {
-      "command": "swift-development.launch",
-      "title": "Launch",
-      "category": "Swift Development"
-    },
-    {
-      "command": "swift-development.resetXcodePopup",
-      "title": "Reset Xcode Project Popup State",
-      "category": "Swift Development"
-    }
   ],
   "keybindings": [
     {
@@ -119,7 +102,7 @@
           {
             "id": "add-launch-config",
             "title": "Add Launch Configuration",
-            "description": "Add debug configurations to the VSCode launch.json:\n[Configure `launch.json`](command:swift-development.generateLaunch)",
+            "description": "Add debug configurations to VSCode launch.json. This creates two configurations:\n- **Build and Launch** - Builds and launches your app\n- **Attach to Running App** - Attaches debugger to an already running app (use this if simulator is already running)\n\n[Configure `launch.json`](command:swift-development.generateLaunch)",
             "media": {
               "markdown": "media/launch.json.md"
             },
@@ -152,7 +135,13 @@
         ]
       }
     ],
-    "commands": []
+    "commands": [
+      {
+        "command": "swift-development.resetXcodePopup",
+        "title": "Reset Xcode Project Popup State",
+        "category": "Swift Development"
+      }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

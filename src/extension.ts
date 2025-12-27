@@ -30,12 +30,37 @@ function deepMerge(target: any, source: any) {
     return target;
 }
 
+// Helper function to detect if running in Cursor
+function isCursor(): boolean {
+    return vscode.env.appName.toLowerCase().includes('cursor');
+}
+
 export async function activate(context: vscode.ExtensionContext) {
     console.log('Congratulations, your extension "swift-development" is now active!');
 
-    const openWelcomeCommand = vscode.commands.registerCommand('swift-development.welcome', () => {
-        // Use the walkthrough API to open the walkthrough if you're using walkthroughs
-        vscode.commands.executeCommand('workbench.action.openWalkthrough', 'alishobeiri.swift-development#swiftdevelopment-getting-started');
+    const openWelcomeCommand = vscode.commands.registerCommand('swift-development.welcome', async () => {
+        // Use the walkthrough API to open the walkthrough
+        try {
+            await vscode.commands.executeCommand(
+                'workbench.action.openWalkthrough',
+                'alishobeiri.swift-development#swiftdevelopment-getting-started',
+                false
+            );
+        } catch (error) {
+            // Fallback for Cursor or other VSCode forks that don't support walkthroughs
+            const choice = await vscode.window.showInformationMessage(
+                'Welcome to Swift Development for VSCode!\n\nWould you like to run the automated setup?',
+                { modal: true },
+                'Auto Setup',
+                'View Documentation'
+            );
+
+            if (choice === 'Auto Setup') {
+                await vscode.commands.executeCommand('swift-development.runAllSteps');
+            } else if (choice === 'View Documentation') {
+                vscode.env.openExternal(vscode.Uri.parse('https://github.com/alishobeiri/Swift-Cursor-VSCode-Extension-Pack'));
+            }
+        }
     });
     
     context.subscriptions.push(openWelcomeCommand);
@@ -130,8 +155,15 @@ export async function activate(context: vscode.ExtensionContext) {
                 {
                     "type": "sweetpad-lldb",
                     "request": "launch",
-                    "name": "Attach to running app (SweetPad)",
-                    "preLaunchTask": "sweetpad: launch"
+                    "name": "Build and Launch (SweetPad)",
+                    "preLaunchTask": "sweetpad: launch",
+                    "stopAll": true
+                },
+                {
+                    "type": "sweetpad-lldb",
+                    "request": "attach",
+                    "name": "Attach to Running App (SweetPad)",
+                    "description": "Use this if the app is already running to avoid rebuild"
                 }
             ]
         };
@@ -424,14 +456,22 @@ export async function activate(context: vscode.ExtensionContext) {
             const hasOpenedXcodeprojKey = `${hasOpenedXcodeprojKeyPrefix}${rootPath}`;
             if (!context.globalState.get(hasOpenedXcodeprojKey) && fs.existsSync(rootPath)) {
                 if (containsXcodeproj(rootPath)) {
-                    const runAllSteps = await vscode.window.showInformationMessage(
-                        'This appears to be your first time opening an Xcode project file in this workspace.\n\nWould you like to prepare the Swift Development environment?',
+                    // Build button options based on IDE
+                    const buttons = ['Auto Setup (Recommended)'];
+                    if (!isCursor()) {
+                        buttons.push('Open Walkthrough');
+                    }
+                    buttons.push('Not Now');
+
+                    const choice = await vscode.window.showInformationMessage(
+                        'This appears to be your first time opening an Xcode project in this workspace.\n\nWould you like to set up Swift Development?',
                         { modal: true },
-                        'Yes',
-                        'No'
+                        ...buttons
                     );
-                    if (runAllSteps === 'Yes') {
+                    if (choice === 'Auto Setup (Recommended)') {
                         await vscode.commands.executeCommand('swift-development.runAllSteps');
+                    } else if (choice === 'Open Walkthrough') {
+                        await vscode.commands.executeCommand('swift-development.welcome');
                     }
                     context.globalState.update(hasOpenedXcodeprojKey, true);
                 }
@@ -441,7 +481,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
     if (context.globalState.get(firstTimeKey) === undefined) {
         context.globalState.update(firstTimeKey, false);
-        await vscode.commands.executeCommand('workbench.action.openWalkthrough', 'alishobeiri.swift-development#swiftdevelopment-getting-started');
+        await vscode.commands.executeCommand('swift-development.welcome');
     }    
 }
 
