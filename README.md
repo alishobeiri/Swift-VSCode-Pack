@@ -2,7 +2,7 @@
 
 Extension pack for developing Swift and iOS apps in VSCode or Cursor. Includes syntax highlighting, autocompletion, build integration, debugging, and simulator support.
 
-Provides syntax highlighting, autocompletion, build errors, linting, formatting, debugging, and simulator support for Swift development in VSCode or Cursor. Traditionally, Swift development requires switching between Xcode for building and debugging, and your preferred editor for writing code. This extension pack eliminates that context switching—you can write code, build projects, catch errors, debug with breakpoints, and run apps in the simulator without leaving your editor. Xcode is still required for its build tools and simulator, but you no longer need to switch between applications during development.
+Provides syntax highlighting, autocompletion, build errors, linting, formatting, debugging, and simulator support for Swift development in VSCode or Cursor. Swift development in VSCode was previously limited, requiring Xcode for building and debugging. This extension pack brings build, debug, and run capabilities into VSCode or Cursor. Xcode is still required for build tools and simulator, but you can develop without switching applications.
 
 ## Features
 
