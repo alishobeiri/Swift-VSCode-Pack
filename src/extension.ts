@@ -375,7 +375,13 @@ export async function activate(context: vscode.ExtensionContext) {
         await vscode.commands.executeCommand('swift-development.generateFormatterConfig');
         await vscode.commands.executeCommand('swift-development.generateTasks');
         await vscode.commands.executeCommand('swift-development.generateLaunch');
-        await vscode.commands.executeCommand('sweetpad.build.genereateBuildServerConfig');
+
+        try {
+            await vscode.commands.executeCommand('sweetpad.build.generateBuildServerConfig');
+        } catch (error) {
+            console.log('SweetPad build server config command not available - SweetPad may not be installed yet');
+        }
+
         try {
             await vscode.commands.executeCommand('swift-development.runSweetpadLaunch');
         } catch (error) {

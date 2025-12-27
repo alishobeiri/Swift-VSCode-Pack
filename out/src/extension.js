@@ -377,7 +377,12 @@ function activate(context) {
             yield vscode.commands.executeCommand('swift-development.generateFormatterConfig');
             yield vscode.commands.executeCommand('swift-development.generateTasks');
             yield vscode.commands.executeCommand('swift-development.generateLaunch');
-            yield vscode.commands.executeCommand('sweetpad.build.genereateBuildServerConfig');
+            try {
+                yield vscode.commands.executeCommand('sweetpad.build.generateBuildServerConfig');
+            }
+            catch (error) {
+                console.log('SweetPad build server config command not available - SweetPad may not be installed yet');
+            }
             try {
                 yield vscode.commands.executeCommand('swift-development.runSweetpadLaunch');
             }
