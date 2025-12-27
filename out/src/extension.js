@@ -38,10 +38,17 @@ const path = __importStar(require("path"));
 const fs = __importStar(require("fs"));
 // Helper function to ensure .vscode directory exists
 const ensureVscodeDirectoryExists = () => {
-    const vscodePath = path.join(vscode.workspace.rootPath || '', '.vscode');
-    if (!fs.existsSync(vscodePath)) {
-        fs.mkdirSync(vscodePath);
+    var _a;
+    const workspaceFolder = (_a = vscode.workspace.workspaceFolders) === null || _a === void 0 ? void 0 : _a[0];
+    if (!workspaceFolder) {
+        vscode.window.showErrorMessage('No workspace folder is open.');
+        return undefined;
     }
+    const vscodePath = path.join(workspaceFolder.uri.fsPath, '.vscode');
+    if (!fs.existsSync(vscodePath)) {
+        fs.mkdirSync(vscodePath, { recursive: true });
+    }
+    return vscodePath;
 };
 function cleanJSON(jsonString) {
     return jsonString.replace(/^\uFEFF/, '');
@@ -81,8 +88,10 @@ function activate(context) {
         })));
         // Register command for generating settings.json
         context.subscriptions.push(vscode.commands.registerCommand('swift-development.generateSettings', () => __awaiter(this, void 0, void 0, function* () {
-            ensureVscodeDirectoryExists();
-            const settingsPath = path.join(vscode.workspace.rootPath || '', '.vscode', 'settings.json');
+            const vscodePath = ensureVscodeDirectoryExists();
+            if (!vscodePath)
+                return;
+            const settingsPath = path.join(vscodePath, 'settings.json');
             const newSettings = {
                 "triggerTaskOnSave.tasks": {
                     "sweetpad: build": [
@@ -131,8 +140,10 @@ function activate(context) {
             }
         })));
         context.subscriptions.push(vscode.commands.registerCommand('swift-development.generateLaunch', () => __awaiter(this, void 0, void 0, function* () {
-            ensureVscodeDirectoryExists();
-            const settingsPath = path.join(vscode.workspace.rootPath || '', '.vscode', 'launch.json');
+            const vscodePath = ensureVscodeDirectoryExists();
+            if (!vscodePath)
+                return;
+            const settingsPath = path.join(vscodePath, 'launch.json');
             const newLaunchConfig = {
                 "version": "0.2.0",
                 "configurations": [
@@ -173,8 +184,10 @@ function activate(context) {
             }
         })));
         context.subscriptions.push(vscode.commands.registerCommand('swift-development.generateTasks', () => __awaiter(this, void 0, void 0, function* () {
-            ensureVscodeDirectoryExists();
-            const settingsPath = path.join(vscode.workspace.rootPath || '', '.vscode', 'tasks.json');
+            const vscodePath = ensureVscodeDirectoryExists();
+            if (!vscodePath)
+                return;
+            const settingsPath = path.join(vscodePath, 'tasks.json');
             const newTaskConfig = {
                 "version": "2.0.0",
                 "tasks": [
@@ -265,7 +278,9 @@ function activate(context) {
         })));
         // Generate Swift format settings
         context.subscriptions.push(vscode.commands.registerCommand('swift-development.generateFormatterConfig', () => __awaiter(this, void 0, void 0, function* () {
-            ensureVscodeDirectoryExists();
+            const vscodePath = ensureVscodeDirectoryExists();
+            if (!vscodePath)
+                return;
             const swiftFormatSettings = {
                 "indentation": {
                     "spaces": 4
@@ -275,7 +290,7 @@ function activate(context) {
                 "tabWidth": 8,
                 "version": 1
             };
-            const settingsPath = path.join(vscode.workspace.rootPath || '', '.vscode', '.swift-format');
+            const settingsPath = path.join(vscodePath, '.swift-format');
             try {
                 // Ensure .vscode directory exists
                 const vscodeDir = path.dirname(settingsPath);
@@ -356,15 +371,19 @@ function activate(context) {
             }
             return false;
         }
-        // Function to run all steps
         const runAllStepsCommand = vscode.commands.registerCommand('swift-development.runAllSteps', () => __awaiter(this, void 0, void 0, function* () {
             yield vscode.commands.executeCommand('swift-development.installTools');
             yield vscode.commands.executeCommand('swift-development.generateSettings');
-            yield vscode.commands.executeCommand('sweetpad.build.genereateBuildServerConfig');
             yield vscode.commands.executeCommand('swift-development.generateFormatterConfig');
-            yield vscode.commands.executeCommand('swift-development.generateLaunch');
             yield vscode.commands.executeCommand('swift-development.generateTasks');
-            yield vscode.commands.executeCommand('swift-development.runSweetpadLaunch');
+            yield vscode.commands.executeCommand('swift-development.generateLaunch');
+            yield vscode.commands.executeCommand('sweetpad.build.genereateBuildServerConfig');
+            try {
+                yield vscode.commands.executeCommand('swift-development.runSweetpadLaunch');
+            }
+            catch (error) {
+                vscode.window.showWarningMessage('Initial launch skipped. You can manually build and run using Cmd+R');
+            }
         }));
         context.subscriptions.push(runAllStepsCommand);
         const firstTimeKey = 'isFirstActivation';
