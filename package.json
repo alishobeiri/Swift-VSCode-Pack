@@ -6,7 +6,7 @@
   "publisher": "alishobeiri",
   "icon": "media/logo.png",
   "repository": {
-    "url": "https://github.com/alishobeiri/Swift-VSCode-Pack"
+    "url": "https://github.com/alishobeiri/Swift-Cursor-VSCode-Extension-Pack"
   },
   "engines": {
     "vscode": "^1.34.0"
