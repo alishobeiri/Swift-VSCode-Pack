@@ -2,7 +2,7 @@
   "name": "swift-development",
   "displayName": "Swift Development",
   "description": "Develop Swift apps in Visual Studio Code or Cursor. Complete with simulator and debug support. Supports syntax highlighting, autocompletion, building, build errors, linting, Swift formatting and more.",
-  "version": "0.0.28",
+  "version": "0.0.30",
   "publisher": "alishobeiri",
   "icon": "media/logo.png",
   "repository": {
@@ -44,6 +44,11 @@
     {
       "command": "swift-development.launch",
       "title": "Launch",
+      "category": "Swift Development"
+    },
+    {
+      "command": "swift-development.resetXcodePopup",
+      "title": "Reset Xcode Project Popup State",
       "category": "Swift Development"
     }
   ],

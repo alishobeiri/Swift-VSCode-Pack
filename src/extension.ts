@@ -390,6 +390,30 @@ export async function activate(context: vscode.ExtensionContext) {
     });
     context.subscriptions.push(runAllStepsCommand);
 
+    // Command to reset the Xcode project popup state
+    const resetXcodePopupCommand = vscode.commands.registerCommand('swift-development.resetXcodePopup', async () => {
+        const workspaceFolders = vscode.workspace.workspaceFolders;
+        if (!workspaceFolders) {
+            vscode.window.showWarningMessage('No workspace folder is open.');
+            return;
+        }
+
+        const hasOpenedXcodeprojKeyPrefix = 'hasOpenedXcodeproj_';
+        let clearedCount = 0;
+
+        for (const folder of workspaceFolders) {
+            const rootPath = folder.uri.fsPath;
+            const hasOpenedXcodeprojKey = `${hasOpenedXcodeprojKeyPrefix}${rootPath}`;
+            await context.globalState.update(hasOpenedXcodeprojKey, undefined);
+            clearedCount++;
+        }
+
+        vscode.window.showInformationMessage(
+            `Reset Xcode popup state for ${clearedCount} workspace folder(s). Reload the window to see the popup again.`
+        );
+    });
+    context.subscriptions.push(resetXcodePopupCommand);
+
     const firstTimeKey = 'isFirstActivation';
     const hasOpenedXcodeprojKeyPrefix = 'hasOpenedXcodeproj_';
     const workspaceFolders = vscode.workspace.workspaceFolders;
